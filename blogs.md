@@ -27,14 +27,14 @@ More blog posts about red teaming, exploit development, and offensive security c
 ## Support This Site
 
 If you find my content helpful, please consider:
-- Following me on [GitHub](https://github.com/r0tn3x)
-- Connecting on [Twitter](https://twitter.com/r0tn3x)
+- Following me on [GitHub](https://github.com/r3vpwnx)
+- Connecting on [Twitter](https://twitter.com/r3vpwnx)
 - Sharing my posts with the security community
 
 <br>
 
 ---
 
-**Contact:** r0tn3x@gmail.com
+**Contact:** r3vpwnx@gmail.com
 
 <br>
