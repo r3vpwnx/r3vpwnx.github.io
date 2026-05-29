@@ -1,33 +1,33 @@
 # --------------------------------------------------
 #  BASIC SITE INFO
 # --------------------------------------------------
-title: r0tn3x | Dilanka Kaushal Hewage   # Main site title (appears in browser tab & RSS)
+title: r3vpwnx | Dilanka Kaushal Hewage   # Main site title (appears in browser tab & RSS)
 tagline: Red Team Operator | Offensive Security Specialist | CTF Player  # Optional short tagline, used by some layouts
-description: Personal website of Dilanka Kaushal Hewage (r0tn3x) - Red Team Operator at Dubai Health Authority, specializing in offensive security, reverse engineering, and binary exploitation.  # Strongly recommended for SEO & social cards
+description: Personal website of Dilanka Kaushal Hewage (r3vpwnx) - Red Team Operator at Dubai Health Authority, specializing in offensive security, reverse engineering, and binary exploitation.  # Strongly recommended for SEO & social cards
 
 # TIP ── For local development you can comment out `url`
 # and build with relative paths. In production you want this set.
-url: https://r0tn3x.github.io
+url: https://r3vpwnx.github.io
 
 # --------------------------------------------------
 #  AUTHOR / PROFILE DATA
 # --------------------------------------------------
 owner:
   name: Dilanka Kaushal Hewage
-  avatar: r0tn3x.jpeg
+  avatar: r3vpwnx.jpeg
   bio: Red Team Operator | Breaking things legally
-  email: r0tn3x@gmail.com
-  # cv: https://r0tn3x.github.io/file/CV-r0tn3x.pdf
+  email: r3vpwnx@gmail.com
+  # cv: https://r3vpwnx.github.io/file/CV-r3vpwnx.pdf
 
   # Social networking links are used in author-bio sidebar. Update and remove as you like.
-  twitter: r0tn3x
-  github: r0tn3x
-  linkedin: r0tn3x
+  twitter: r3vpwnx
+  github: r3vpwnx
+  linkedin: r3vpwnx
   # scholar: 
   # researchgate: 
   # zhihu: 
   # xiaohongshu: 
-  instagram: _r0tn3x
+  instagram: _r3vpwnx
   # bilibili: 
   # facebook:
   # lastfm:
@@ -96,7 +96,7 @@ kramdown:
 #  DISQUS COMMENT SYSTEM
 # --------------------------------------------------
 disqus:
-  shortname: r0tn3x
+  shortname: r3vpwnx
 
 
 # include: [".htaccess"]
