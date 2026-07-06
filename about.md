@@ -117,7 +117,7 @@ This blog is my way of sharing knowledge, documenting research, and contributing
 Want to discuss security research, collaborate on a project, or just chat about the latest 0-day?
 
 * **GitHub**: [r3vpwnx](https://github.com/r3vpwnx)
-* **Email**: [r3vpwnx@gmail.com](mailto:r3vpwnx@gmail.com)
+* **Email**: [r3vpwnx@proton.me](mailto:r3vpwnx@proton.me)
 * **Twitter**: [@r3vpwnx](https://twitter.com/r3vpwnx)
 * **LinkedIn**: [Dilanka Kaushal Hewage](https://linkedin.com/in/r3vpwnx)
 
