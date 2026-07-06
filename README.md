@@ -49,7 +49,7 @@ Built with [Jekyll](https://jekyllrb.com/) and [GitHub Pages](https://pages.gith
 
 ## Contact
 
-- **Email:** r0tn3x@gmail.com
-- **Twitter:** [@r0tn3x](https://twitter.com/r0tn3x)
-- **GitHub:** [r0tn3x](https://github.com/r0tn3x)
-- **LinkedIn:** [r0tn3x](https://linkedin.com/in/r0tn3x)
+- **Email:** r3vpwnx@gmail.com
+- **Twitter:** [@r3vpwnx](https://twitter.com/r3vpwnx)
+- **GitHub:** [r3vpwnx](https://github.com/r3vpwnx)
+- **LinkedIn:** [r3vpwnx](https://linkedin.com/in/r3vpwnx)
