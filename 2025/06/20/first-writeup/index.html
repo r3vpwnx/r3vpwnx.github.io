@@ -122,7 +122,7 @@
   <header class="post-header">
     <h1 class="post-title">HTB: Down</h1>
     <div class="post-meta">
-      <time datetime="2026-04-20T09:00:00.000Z">published 2026-04-20</time>
+      <time datetime="2025-06-20T09:00:00.000Z">published 2025-06-20</time>
       
       
         
@@ -141,10 +141,7 @@
   
 
   <div class="post-content">
-    <ul>
-<li>TOC<br>{:toc}</li>
-</ul>
-<p><strong>Down</strong> is an easy Linux box (the first VulnLab → HTB migration) that hinges on a single primitive: <code>escapeshellcmd()</code> stops <em>command</em> injection but does nothing about <em>argument</em> injection. A website-uptime checker shells out to <code>curl</code> and <code>nc</code> with user input glued into the command string. I abuse curl’s multi-URL handling to read arbitrary files, recover the PHP source, then abuse an <code>intval()</code>&#x2F;original-string validation gap in an “expert mode” to inject <code>-e /bin/sh</code> into <code>nc</code> for a shell. Root falls out of a cracked <code>pswm</code> vault (scrypt + AES-GCM) and a wide-open sudo rule.</p>
+    <p><strong>Down</strong> is an easy Linux box (the first VulnLab → HTB migration) that hinges on a single primitive: <code>escapeshellcmd()</code> stops <em>command</em> injection but does nothing about <em>argument</em> injection. A website-uptime checker shells out to <code>curl</code> and <code>nc</code> with user input glued into the command string. I abuse curl’s multi-URL handling to read arbitrary files, recover the PHP source, then abuse an <code>intval()</code>&#x2F;original-string validation gap in an “expert mode” to inject <code>-e /bin/sh</code> into <code>nc</code> for a shell. Root falls out of a cracked <code>pswm</code> vault (scrypt + AES-GCM) and a wide-open sudo rule.</p>
 <h5 id="Path-to-root-at-a-glance"><a href="#Path-to-root-at-a-glance" class="headerlink" title="Path to root, at a glance:"></a>Path to root, at a glance:</h5><ol>
 <li>Inject a curl argument → read arbitrary files → dump the PHP source.</li>
 <li>Read the source → find a hidden <code>expertmode</code> that runs <code>nc</code> with a validation bug.</li>

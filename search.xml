@@ -2,11 +2,8 @@
 <search>
   <entry>
     <title>HTB: Down</title>
-    <url>/2026/04/20/first-writeup/</url>
-    <content><![CDATA[<ul>
-<li>TOC<br>{:toc}</li>
-</ul>
-<p><strong>Down</strong> is an easy Linux box (the first VulnLab → HTB migration) that hinges on a single primitive: <code>escapeshellcmd()</code> stops <em>command</em> injection but does nothing about <em>argument</em> injection. A website-uptime checker shells out to <code>curl</code> and <code>nc</code> with user input glued into the command string. I abuse curl’s multi-URL handling to read arbitrary files, recover the PHP source, then abuse an <code>intval()</code>&#x2F;original-string validation gap in an “expert mode” to inject <code>-e /bin/sh</code> into <code>nc</code> for a shell. Root falls out of a cracked <code>pswm</code> vault (scrypt + AES-GCM) and a wide-open sudo rule.</p>
+    <url>/2025/06/20/first-writeup/</url>
+    <content><![CDATA[<p><strong>Down</strong> is an easy Linux box (the first VulnLab → HTB migration) that hinges on a single primitive: <code>escapeshellcmd()</code> stops <em>command</em> injection but does nothing about <em>argument</em> injection. A website-uptime checker shells out to <code>curl</code> and <code>nc</code> with user input glued into the command string. I abuse curl’s multi-URL handling to read arbitrary files, recover the PHP source, then abuse an <code>intval()</code>&#x2F;original-string validation gap in an “expert mode” to inject <code>-e /bin/sh</code> into <code>nc</code> for a shell. Root falls out of a cracked <code>pswm</code> vault (scrypt + AES-GCM) and a wide-open sudo rule.</p>
 <h5 id="Path-to-root-at-a-glance"><a href="#Path-to-root-at-a-glance" class="headerlink" title="Path to root, at a glance:"></a>Path to root, at a glance:</h5><ol>
 <li>Inject a curl argument → read arbitrary files → dump the PHP source.</li>
 <li>Read the source → find a hidden <code>expertmode</code> that runs <code>nc</code> with a validation bug.</li>
@@ -116,18 +113,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Welcome to the blog</title>
-    <url>/2023/03/14/welcome/</url>
-    <content><![CDATA[<p>Welcome. This is <strong>r3vpwnx</strong>‘s red team blog — writeups, articles, and cheatsheets on offensive security, exploitation, and CTFs.</p>
-]]></content>
-      <categories>
-        <category>Articles</category>
-      </categories>
-      <tags>
-        <tag>meta</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux Privilege Escalation Cheatsheet</title>
     <url>/2026/08/08/linux-privesc-cheatsheet/</url>
     <content><![CDATA[<p>Quick reference commands — replace&#x2F;expand with your own notes.</p>
@@ -151,6 +136,18 @@
       <tags>
         <tag>privesc</tag>
         <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Welcome to the blog</title>
+    <url>/2023/03/14/welcome/</url>
+    <content><![CDATA[<p>Welcome. This is <strong>r3vpwnx</strong>‘s red team blog — writeups, articles, and cheatsheets on offensive security, exploitation, and CTFs.</p>
+]]></content>
+      <categories>
+        <category>Articles</category>
+      </categories>
+      <tags>
+        <tag>meta</tag>
       </tags>
   </entry>
 </search>
