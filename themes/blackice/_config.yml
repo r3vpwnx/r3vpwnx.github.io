@@ -3,16 +3,23 @@
 
 # Profile / sidebar
 profile:
-  avatar: /images/avatar.svg
+  avatar: /images/r3vpwnx.jpg
   name: r3vpwnx
   tagline: Red Team | Offensive Security
 
+# GitHub is the primary "follow" CTA, shown as a button above the icon row
+follow:
+  github: https://github.com/r3vpwnx
+
 # Social links (edit to taste)
 social:
-  github: https://github.com/r3vpwnx
   x: https://x.com/r3vpwnx
   linkedin: https://linkedin.com/in/r3vpwnx
   instagram: https://instagram.com/r3vpwnx
+
+# Support / donate link, shown in the sidebar and under every post
+support:
+  paypal: https://paypal.me/theoptech
 
 # Background image shown behind every page
 background:

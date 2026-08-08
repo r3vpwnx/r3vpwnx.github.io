@@ -26,6 +26,34 @@
   </div>
   <% } %>
 
+  <% if ((theme.follow && theme.follow.github) || (theme.support && theme.support.paypal)) { %>
+  <div class="post-cta">
+    <p class="post-cta-text">Found this useful?</p>
+    <div class="post-cta-buttons">
+      <% if (theme.follow && theme.follow.github) { %>
+      <a class="btn-follow" href="<%= theme.follow.github %>" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <circle cx="12" cy="13" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M7 8 L9.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M17 8 L14.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="9" cy="12.5" r="1.1" fill="currentColor"/>
+          <circle cx="15" cy="12.5" r="1.1" fill="currentColor"/>
+        </svg>
+        Follow on GitHub
+      </a>
+      <% } %>
+      <% if (theme.support && theme.support.paypal) { %>
+      <a class="btn-support" href="<%= theme.support.paypal %>" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <path d="M6 4h8a4.5 4.5 0 0 1 4.4 5.5A5.5 5.5 0 0 1 13 14h-3l-1 6H6L8.2 4Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        </svg>
+        Support via PayPal
+      </a>
+      <% } %>
+    </div>
+  </div>
+  <% } %>
+
   <nav class="post-pager">
     <% if (page.prev) { %><a class="pager-link" href="<%- url_for(page.prev.path) %>">&larr; <%= page.prev.title %></a><% } else { %><span></span><% } %>
     <% if (page.next) { %><a class="pager-link" href="<%- url_for(page.next.path) %>"><%= page.next.title %> &rarr;</a><% } %>
