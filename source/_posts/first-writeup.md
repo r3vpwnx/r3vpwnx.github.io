@@ -1,14 +1,11 @@
 ---
 title: 'HTB: Down'
-date: 2025-16-20 09:00:00
+date: 2025-06-20 09:00:00
 categories: Writeups
 tags:
   - htb
   - privesc
 ---
-
-* TOC
-{:toc}
 
 **Down** is an easy Linux box (the first VulnLab → HTB migration) that hinges on a single primitive: `escapeshellcmd()` stops _command_ injection but does nothing about _argument_ injection. A website-uptime checker shells out to `curl` and `nc` with user input glued into the command string. I abuse curl's multi-URL handling to read arbitrary files, recover the PHP source, then abuse an `intval()`/original-string validation gap in an "expert mode" to inject `-e /bin/sh` into `nc` for a shell. Root falls out of a cracked `pswm` vault (scrypt + AES-GCM) and a wide-open sudo rule.
 
