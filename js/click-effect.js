@@ -2,7 +2,7 @@
   var cfg = (window.BLACKICE && window.BLACKICE.clickEffect) || {};
   if (!cfg.enable || !cfg.words || !cfg.words.length) return;
 
-  var IGNORE_SELECTOR = 'a, button, input, textarea, select, label, .search-overlay, .search-overlay *';
+  var IGNORE_SELECTOR = 'a, button, input, textarea, select, label, .search-overlay, .search-overlay *, pre, code, figure.highlight, figure.highlight *';
 
   document.addEventListener('click', function (e) {
     if (e.target.closest(IGNORE_SELECTOR)) return;
