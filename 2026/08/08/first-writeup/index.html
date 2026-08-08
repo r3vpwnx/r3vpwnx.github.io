@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTB: Example Box Writeup | r3vpwnx</title>
+<meta name="description" content="Red Team | Offensive Security">
+<meta name="author" content="r3vpwnx">
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+<body>
+  <div class="bg-layer" id="bgLayer" style="background-image: url('/images/background.jpeg');"></div>
+  <div class="bg-overlay" id="bgOverlay"></div>
+
+  <header class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="/">
+      <span class="brand-glitch" data-text="r3vpwnx">r3vpwnx</span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="nav-links" id="navLinks">
+      <button class="nav-link search-trigger" id="searchTrigger" type="button" aria-label="Search">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+          <line x1="20" y1="20" x2="15.2" y2="15.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>Search</span>
+      </button>
+      
+        <a href="/" class="nav-link">Home</a>
+      
+        <a href="/categories/writeups/" class="nav-link">Writeups</a>
+      
+        <a href="/categories/articles/" class="nav-link">Articles</a>
+      
+        <a href="/archives/" class="nav-link">Archive</a>
+      
+        <a href="/tags/" class="nav-link">Tags</a>
+      
+        <a href="/categories/" class="nav-link">Categories</a>
+      
+        <a href="/categories/cheatsheets/" class="nav-link">Cheatsheets</a>
+      
+        <a href="/about/" class="nav-link">About</a>
+      
+    </nav>
+  </div>
+</header>
+
+
+  <div class="page-shell">
+    <aside class="sidebar" id="sidebar">
+  <div class="profile-card">
+    <img class="avatar" src="/images/avatar.svg" alt="r3vpwnx">
+    <h2 class="profile-name">r3vpwnx</h2>
+    <p class="profile-tagline">Red Team | Offensive Security</p>
+
+    <div class="social-links">
+      
+      <a href="https://github.com/r3vpwnx" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <circle cx="12" cy="13" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M7 8 L9.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M17 8 L14.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="9" cy="12.5" r="1.1" fill="currentColor"/>
+          <circle cx="15" cy="12.5" r="1.1" fill="currentColor"/>
+        </svg>
+      </a>
+      
+
+      
+      <a href="https://x.com/r3vpwnx" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" title="X">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <line x1="8" y1="8" x2="16" y2="16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="16" y1="8" x2="8" y2="16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </a>
+      
+
+      
+      <a href="https://linkedin.com/in/r3vpwnx" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <text x="12" y="16.5" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="currentColor" text-anchor="middle">in</text>
+        </svg>
+      </a>
+      
+
+      
+      <a href="https://instagram.com/r3vpwnx" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <circle cx="16.7" cy="7.3" r="1" fill="currentColor"/>
+        </svg>
+      </a>
+      
+    </div>
+  </div>
+</aside>
+
+    <main class="content">
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">HTB: Example Box Writeup</h1>
+    <div class="post-meta">
+      <time datetime="2026-08-08T06:05:00.000Z">published 2026-08-08</time>
+      
+        <span>&middot; updated 2026-08-08</span>
+      
+      
+        
+          <a class="pill" href="/categories/writeups/">Writeups</a>
+        
+      
+    </div>
+  </header>
+
+  <div class="post-content">
+    <blockquote>
+<p>Placeholder writeup — replace with your first real one.</p>
+</blockquote>
+<h2 id="Recon"><a href="#Recon" class="headerlink" title="Recon"></a>Recon</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sC -sV -oN nmap.txt 10.10.10.10</span><br></pre></td></tr></table></figure>
+
+<h2 id="Foothold"><a href="#Foothold" class="headerlink" title="Foothold"></a>Foothold</h2><p>Describe the initial access vector here.</p>
+<h2 id="Privilege-Escalation"><a href="#Privilege-Escalation" class="headerlink" title="Privilege Escalation"></a>Privilege Escalation</h2><p>Describe the privesc path here.</p>
+
+  </div>
+
+  
+  <div class="post-card-tags post-tags">
+    
+      <a class="tag" href="/tags/htb/">#htb</a>
+    
+      <a class="tag" href="/tags/privesc/">#privesc</a>
+    
+  </div>
+  
+
+  <nav class="post-pager">
+    <a class="pager-link" href="/2026/08/08/linux-privesc-cheatsheet/">&larr; Linux Privilege Escalation Cheatsheet</a>
+    <a class="pager-link" href="/2026/08/08/welcome/">Welcome to the blog &rarr;</a>
+  </nav>
+</article>
+
+    </main>
+  </div>
+
+  <footer class="site-footer">
+  <p>© r3vpwnx — stay dangerous. · 2026</p>
+</footer>
+
+
+  <div class="search-overlay" id="searchOverlay" hidden>
+    <div class="search-box">
+      <div class="search-input-row">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+          <line x1="20" y1="20" x2="15.2" y2="15.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Search writeups, articles, cheatsheets..." autocomplete="off">
+        <button id="searchClose" class="search-close" aria-label="Close search">&times;</button>
+      </div>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
+
+  <script>
+    window.BLACKICE = {
+      root: "/",
+      clickEffect: {"enable":true,"words":["ACCESS GRANTED","ROOT","0-DAY","SHELL SPAWNED","EXPLOIT","PWNED","BACKDOOR PLANTED","RECON COMPLETE","PAYLOAD DELIVERED","PRIVESC","C2 ESTABLISHED","BREACH DETECTED","LATERAL MOVEMENT","PERSISTENCE SET","EXFILTRATED","NMAP -sV -sC","INJECT","SEGFAULT"]},
+      searchPath: "/search.xml"
+    };
+  </script>
+  <script src="/js/main.js"></script>
+  <script src="/js/click-effect.js"></script>
+  <script src="/js/search.js"></script>
+</body>
+</html>
