@@ -3,18 +3,24 @@
   <p class="section-sub"><%= site.posts.length %> posts total</p>
 
   <% var lastYear = null; %>
-  <ul class="archive-list">
+  <div class="timeline">
     <% page.posts.each(function(post){ %>
       <% var y = date(post.date, 'YYYY'); %>
       <% if (y !== lastYear) { lastYear = y; %>
-        <li class="archive-year"><%= y %></li>
+        <div class="timeline-year"><span><%= y %></span></div>
       <% } %>
-      <li class="archive-item">
-        <time><%= date(post.date, 'MM-DD') %></time>
-        <a href="<%- url_for(post.path) %>"><%= post.title %></a>
-      </li>
+      <div class="timeline-item">
+        <span class="timeline-dot"></span>
+        <time class="timeline-date"><%= date(post.date, 'MM-DD') %></time>
+        <a class="timeline-title" href="<%- url_for(post.path) %>"><%= post.title %></a>
+        <% if (post.categories && post.categories.length) { %>
+        <span class="timeline-cat">
+          <% post.categories.forEach(function(cat, i){ %><%= i > 0 ? ', ' : '' %><%= cat.name %><% }) %>
+        </span>
+        <% } %>
+      </div>
     <% }) %>
-  </ul>
+  </div>
 </section>
 
 <%- partial('_partial/pager') %>

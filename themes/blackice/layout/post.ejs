@@ -14,6 +14,16 @@
     </div>
   </header>
 
+  <%
+    var tocHtml = (page.toc !== false) ? toc(page.content, { list_number: false }) : '';
+  %>
+  <% if (tocHtml && tocHtml.length) { %>
+  <details class="post-toc" open>
+    <summary class="post-toc-title">Table of Contents</summary>
+    <%- tocHtml %>
+  </details>
+  <% } %>
+
   <div class="post-content">
     <%- page.content %>
   </div>
