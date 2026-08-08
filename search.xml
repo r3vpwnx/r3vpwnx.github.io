@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Welcome to the blog</title>
-    <url>/2023/03/14/welcome/</url>
-    <content><![CDATA[<p>Welcome. This is <strong>r3vpwnx</strong>‘s red team blog — writeups, articles, and cheatsheets on offensive security, exploitation, and CTFs.</p>
-<p>Everything here is written in plain markdown and pushed straight from GitHub, no local build required. Use the nav bar above to browse by section, or hit <code>/</code> (or the search icon) to search everything.</p>
-]]></content>
-      <categories>
-        <category>Articles</category>
-      </categories>
-      <tags>
-        <tag>meta</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>HTB: Example Box Writeup</title>
     <url>/2019/11/02/first-writeup/</url>
     <content><![CDATA[<blockquote>
@@ -56,6 +43,18 @@
       <tags>
         <tag>privesc</tag>
         <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Welcome to the blog</title>
+    <url>/2023/03/14/welcome/</url>
+    <content><![CDATA[<p>Welcome. This is <strong>r3vpwnx</strong>‘s red team blog — writeups, articles, and cheatsheets on offensive security, exploitation, and CTFs.</p>
+]]></content>
+      <categories>
+        <category>Articles</category>
+      </categories>
+      <tags>
+        <tag>meta</tag>
       </tags>
   </entry>
 </search>
