@@ -5,6 +5,21 @@
   blocks.forEach(function (figure) {
     figure.classList.add('code-block');
 
+    var lang = figure.className
+      .split(/\s+/)
+      .filter(function (c) { return c && c !== 'highlight' && c !== 'code-block'; })[0] || 'shell';
+
+    var bar = document.createElement('div');
+    bar.className = 'term-bar';
+
+    var dots = document.createElement('span');
+    dots.className = 'term-dots';
+    dots.innerHTML = '<span></span><span></span><span></span>';
+
+    var label = document.createElement('span');
+    label.className = 'term-lang';
+    label.textContent = lang;
+
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'code-copy-btn';
@@ -31,7 +46,10 @@
       }
     });
 
-    figure.appendChild(btn);
+    bar.appendChild(dots);
+    bar.appendChild(label);
+    bar.appendChild(btn);
+    figure.insertBefore(bar, figure.firstChild);
   });
 
   function fallbackCopy(text, done) {
