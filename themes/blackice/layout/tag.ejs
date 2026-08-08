@@ -1,0 +1,12 @@
+<section class="post-list-page">
+  <h1 class="section-title">Tag: #<%= page.tag %></h1>
+  <p class="section-sub"><%= page.posts.length %> posts</p>
+
+  <section class="post-list">
+    <% page.posts.each(function(post){ %>
+      <%- partial('_partial/post-card', { post: post }) %>
+    <% }) %>
+  </section>
+</section>
+
+<%- partial('_partial/pager') %>

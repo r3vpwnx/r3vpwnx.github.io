@@ -1,0 +1,10 @@
+<%
+  var pageTitle = page.title || page.category || (page.tag ? '#' + page.tag : null) || (is_archive() ? 'Archive' : null);
+%>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= pageTitle ? pageTitle + ' | ' + config.title : config.title + ' — ' + config.subtitle %></title>
+<meta name="description" content="<%= page.description || config.description || config.subtitle %>">
+<meta name="author" content="<%= config.author %>">
+<link rel="icon" type="image/svg+xml" href="<%- url_for('/images/favicon.svg') %>">
+<link rel="stylesheet" href="<%- url_for('/css/style.css') %>">

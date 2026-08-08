@@ -1,0 +1,67 @@
+# BlackICE theme config
+# Theme by r3vpwnx — https://github.com/r3vpwnx
+
+# Profile / sidebar
+profile:
+  avatar: /images/avatar.svg
+  name: r3vpwnx
+  tagline: Red Team | Offensive Security
+
+# Social links (edit to taste)
+social:
+  github: https://github.com/r3vpwnx
+  x: https://x.com/r3vpwnx
+  linkedin: https://linkedin.com/in/r3vpwnx
+  instagram: https://instagram.com/r3vpwnx
+
+# Background image shown behind every page
+background:
+  image: /images/background.jpeg
+
+# Words that pop up when the background is clicked
+click_effect:
+  enable: true
+  words:
+    - ACCESS GRANTED
+    - ROOT
+    - 0-DAY
+    - SHELL SPAWNED
+    - EXPLOIT
+    - PWNED
+    - BACKDOOR PLANTED
+    - RECON COMPLETE
+    - PAYLOAD DELIVERED
+    - PRIVESC
+    - C2 ESTABLISHED
+    - BREACH DETECTED
+    - LATERAL MOVEMENT
+    - PERSISTENCE SET
+    - EXFILTRATED
+    - NMAP -sV -sC
+    - INJECT
+    - SEGFAULT
+
+# Top navigation bar
+nav:
+  - text: Home
+    url: /
+  - text: Writeups
+    url: /categories/writeups/
+  - text: Articles
+    url: /categories/articles/
+  - text: Archive
+    url: /archives/
+  - text: Tags
+    url: /tags/
+  - text: Categories
+    url: /categories/
+  - text: Cheatsheets
+    url: /categories/cheatsheets/
+  - text: About
+    url: /about/
+
+# Number of posts shown per card list page
+post_count: 10
+
+footer:
+  text: '© r3vpwnx — stay dangerous.'

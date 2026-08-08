@@ -1,0 +1,13 @@
+<section class="taxonomy">
+  <h1 class="section-title">Tags</h1>
+
+  <% if (site.tags.length === 0) { %>
+    <p class="empty-state">No tags yet.</p>
+  <% } else { %>
+  <div class="tag-cloud">
+    <% site.tags.sort('name').each(function(tag){ %>
+      <a class="tag-cloud-item" href="<%- url_for(tag.path) %>">#<%= tag.name %> <span class="count"><%= tag.posts.length %></span></a>
+    <% }) %>
+  </div>
+  <% } %>
+</section>

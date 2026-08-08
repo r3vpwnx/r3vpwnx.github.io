@@ -1,0 +1,23 @@
+<article class="post-card">
+  <h2 class="post-card-title">
+    <a href="<%- url_for(post.path) %>"><%= post.title %></a>
+  </h2>
+  <div class="post-card-meta">
+    <time datetime="<%= date_xml(post.date) %>"><%= date(post.date, 'YYYY-MM-DD') %></time>
+    <% if (post.categories && post.categories.length) { %>
+      <% post.categories.forEach(function(cat){ %>
+        <a class="pill" href="<%- url_for(cat.path) %>"><%= cat.name %></a>
+      <% }) %>
+    <% } %>
+  </div>
+  <% if (post.excerpt) { %>
+    <div class="post-card-excerpt"><%- post.excerpt %></div>
+  <% } %>
+  <% if (post.tags && post.tags.length) { %>
+    <div class="post-card-tags">
+      <% post.tags.forEach(function(tag){ %>
+        <a class="tag" href="<%- url_for(tag.path) %>">#<%= tag.name %></a>
+      <% }) %>
+    </div>
+  <% } %>
+</article>

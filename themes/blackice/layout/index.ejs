@@ -1,0 +1,12 @@
+<section class="hero">
+  <h1 class="hero-title">root<span class="cursor">@</span><%= config.author %><span class="cursor">:~$</span></h1>
+  <p class="hero-sub"><%= config.subtitle %></p>
+</section>
+
+<section class="post-list">
+  <% page.posts.each(function(post){ %>
+    <%- partial('_partial/post-card', { post: post }) %>
+  <% }) %>
+</section>
+
+<%- partial('_partial/pager') %>

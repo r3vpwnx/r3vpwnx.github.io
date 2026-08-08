@@ -67,6 +67,9 @@ index_generator:
 # Category & Tag
 default_category: uncategorized
 category_map:
+  Writeups: writeups
+  Articles: articles
+  Cheatsheets: cheatsheets
 tag_map:
 
 # Metadata elements
@@ -96,7 +99,14 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: blackice
+
+# Search index (used by the theme's client-side search)
+search:
+  path: search.xml
+  field: post
+  content: true
+  format: html
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment

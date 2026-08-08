@@ -1,0 +1,16 @@
+<section class="post-list-page">
+  <h1 class="section-title">Category: <%= page.category %></h1>
+  <p class="section-sub"><%= page.posts.length %> posts</p>
+
+  <section class="post-list">
+    <% page.posts.each(function(post){ %>
+      <%- partial('_partial/post-card', { post: post }) %>
+    <% }) %>
+  </section>
+
+  <% if (page.posts.length === 0) { %>
+    <p class="empty-state">Nothing filed under this category yet.</p>
+  <% } %>
+</section>
+
+<%- partial('_partial/pager') %>

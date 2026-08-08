@@ -1,0 +1,16 @@
+<section class="taxonomy">
+  <h1 class="section-title">Categories</h1>
+
+  <% if (site.categories.length === 0) { %>
+    <p class="empty-state">No categories yet.</p>
+  <% } else { %>
+  <ul class="taxonomy-list">
+    <% site.categories.sort('name').each(function(cat){ %>
+      <li>
+        <a href="<%- url_for(cat.path) %>"><%= cat.name %></a>
+        <span class="count"><%= cat.posts.length %></span>
+      </li>
+    <% }) %>
+  </ul>
+  <% } %>
+</section>

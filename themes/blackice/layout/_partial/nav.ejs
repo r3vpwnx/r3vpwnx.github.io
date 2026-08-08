@@ -1,0 +1,24 @@
+<header class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="<%- url_for('/') %>">
+      <span class="brand-glitch" data-text="<%= config.author %>"><%= config.author %></span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="nav-links" id="navLinks">
+      <button class="nav-link search-trigger" id="searchTrigger" type="button" aria-label="Search">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+          <line x1="20" y1="20" x2="15.2" y2="15.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>Search</span>
+      </button>
+      <% theme.nav.forEach(function(item){ %>
+        <a href="<%- url_for(item.url) %>" class="nav-link"><%= item.text %></a>
+      <% }) %>
+    </nav>
+  </div>
+</header>
