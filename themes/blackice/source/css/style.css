@@ -464,8 +464,8 @@ a:hover { text-decoration: underline; }
 .post-content figure.highlight {
   position: relative;
   margin: 1.4em 0;
-  background: #0b0d0f;
-  border: 1px solid #2a2f36;
+  background: #0a1a2f;
+  border: 1px solid #1f3350;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 10px 26px rgba(0,0,0,0.35);
@@ -476,7 +476,7 @@ a:hover { text-decoration: underline; }
   gap: 10px;
   padding: 8px 12px;
   background: #1b1e23;
-  border-bottom: 1px solid #2a2f36;
+  border-bottom: 1px solid #1f3350;
 }
 .term-dots { display: flex; gap: 6px; flex-shrink: 0; }
 .term-dots span { display: block; width: 11px; height: 11px; border-radius: 50%; }
