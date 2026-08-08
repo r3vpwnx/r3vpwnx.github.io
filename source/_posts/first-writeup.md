@@ -1,6 +1,6 @@
 ---
 title: 'HTB: Example Box Writeup'
-date: 2026-08-08 06:05:00
+date: 2019-11-02 09:00:00
 categories: Writeups
 tags:
   - htb

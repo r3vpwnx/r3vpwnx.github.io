@@ -1,23 +1,40 @@
+<%
+  var catName = '';
+  if (post.categories && post.categories.length) {
+    post.categories.forEach(function(cat, i){ if (i === 0) catName = cat.name; });
+  }
+  var catSlug = catName ? catName.toLowerCase() : 'default';
+  var initial = catName ? catName.charAt(0).toUpperCase() : (post.title ? post.title.charAt(0).toUpperCase() : '?');
+%>
 <article class="post-card">
-  <h2 class="post-card-title">
-    <a href="<%- url_for(post.path) %>"><%= post.title %></a>
-  </h2>
-  <div class="post-card-meta">
-    <time datetime="<%= date_xml(post.date) %>"><%= date(post.date, 'YYYY-MM-DD') %></time>
-    <% if (post.categories && post.categories.length) { %>
-      <% post.categories.forEach(function(cat){ %>
-        <a class="pill" href="<%- url_for(cat.path) %>"><%= cat.name %></a>
-      <% }) %>
+  <a class="post-card-thumb cover-<%= catSlug %>" href="<%- url_for(post.path) %>">
+    <% if (post.cover) { %>
+      <img src="<%- url_for(post.cover) %>" alt="<%= post.title %>">
+    <% } else { %>
+      <span class="post-card-thumb-glyph"><%= initial %></span>
+    <% } %>
+  </a>
+  <div class="post-card-body">
+    <h2 class="post-card-title">
+      <a href="<%- url_for(post.path) %>"><%= post.title %></a>
+    </h2>
+    <div class="post-card-meta">
+      <time datetime="<%= date_xml(post.date) %>"><%= date(post.date, 'YYYY-MM-DD') %></time>
+      <% if (post.categories && post.categories.length) { %>
+        <% post.categories.forEach(function(cat){ %>
+          <a class="pill" href="<%- url_for(cat.path) %>"><%= cat.name %></a>
+        <% }) %>
+      <% } %>
+    </div>
+    <% if (post.excerpt) { %>
+      <div class="post-card-excerpt"><%- post.excerpt %></div>
+    <% } %>
+    <% if (post.tags && post.tags.length) { %>
+      <div class="post-card-tags">
+        <% post.tags.forEach(function(tag){ %>
+          <a class="tag" href="<%- url_for(tag.path) %>">#<%= tag.name %></a>
+        <% }) %>
+      </div>
     <% } %>
   </div>
-  <% if (post.excerpt) { %>
-    <div class="post-card-excerpt"><%- post.excerpt %></div>
-  <% } %>
-  <% if (post.tags && post.tags.length) { %>
-    <div class="post-card-tags">
-      <% post.tags.forEach(function(tag){ %>
-        <a class="tag" href="<%- url_for(tag.path) %>">#<%= tag.name %></a>
-      <% }) %>
-    </div>
-  <% } %>
 </article>
